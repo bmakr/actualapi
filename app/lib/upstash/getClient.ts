@@ -11,12 +11,9 @@ export async function getClient({
 }: { 
   name: string; 
 }) {
-  console.log('getClient')
-  console.log({ name })
   // set client connection to redis
   try {
     const conn = await new Redis(urls[name])
-    console.log('getClient', conn)
     if (!conn) return
     return conn
   } catch(e) {

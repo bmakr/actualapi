@@ -37,14 +37,16 @@ export async function POST(req: NextRequest) {
   try {
     const listFromDb = await getItem({ name, key })
     console.log({ listFromDb })
-    // if list exists, set list to listFromDb
-    if (listFromDb) {
-      list = listFromDb
-    } else { // set list to empty array
+    
+    if (listFromDb === undefined) {
+      return NextResponse.json({ error: 'Internal error: get list error 1' }, { status: 500 })
+    } else if (listFromDb === null) { // set list to empty array
       list = []
+    } else {
+      list = listFromDb
     }
   } catch (e) {
-    return NextResponse.json({ error: 'Internal error: get list error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal error: get list error 2' }, { status: 500 })
   }
 
   console.log({ list })

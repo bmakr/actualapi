@@ -1,5 +1,6 @@
 'use server'
 
+import { Redis } from 'ioredis';
 import { getClient } from './getClient'
 
 export async function getItem({
@@ -12,22 +13,28 @@ export async function getItem({
   id?: string;
 }) {
   // set client connection to redis
-  let conn: any
+  let conn: Redis | undefined
+  let json = ''
   try {
-    const conn = await getClient({ name })
+    const conn = await getClient({ name }) as Redis
     if (!conn) return
-  } catch (e) {
-    return
-  }
 
-  // get item from redis
-  let json
-  try {
+    // get item from redis
     // key and id are optional
     const fullKey = key && id ? `${name}:${key}:${id}`
       : id ? `${name}:${id}`
         : `${name}:${key}`
+    console.log({ fullKey })
+    console.log('conn.get', conn)
     json = await conn.get(fullKey) as string
+  } catch (e) {
+    return
+  }
+
+
+
+  try {
+
   } catch (e) {
     console.log(e)
     return
@@ -41,7 +48,7 @@ export async function getItem({
 
   } catch (e) {
     console.error(e)
-    return 
+    return
   }
 
   return item
