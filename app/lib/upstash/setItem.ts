@@ -14,8 +14,6 @@ export async function setItem({
   payload: string;
 }) {
   // set client connection to redis
-  let conn: any
-
   try {
     const conn = await getClient({ name })
     if (!conn) return

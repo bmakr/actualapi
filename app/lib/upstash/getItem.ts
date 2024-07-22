@@ -31,15 +31,6 @@ export async function getItem({
     return
   }
 
-
-
-  try {
-
-  } catch (e) {
-    console.log(e)
-    return
-  }
-
   // parse json
   let item
   try {
