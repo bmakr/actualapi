@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "ioredis": "^5.4.1",
+    "loops": "^3.0.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"

@@ -18,7 +18,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
+      "types": ["./app/types"],
       "lib": ["./app/lib"]
     }
   },
