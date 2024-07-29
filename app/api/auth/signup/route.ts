@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createId, getItem, nowInSeconds, setItem, sendEmail } from 'lib'
 import { KeyValues, Passcode, User } from 'types'
 
+const LOOPS_LIST_ID_FREE = process.env.LOOPS_LIST_ID_FREE as string
+
 export async function POST(req: NextRequest) {
   // get body
   let body
@@ -113,25 +115,28 @@ export async function POST(req: NextRequest) {
   }
 
   // send email
-  // try {
-  //   const emailRes = await sendEmail({
-  //     transactionalId: 'clyzxp02l047ik84p9gx7nhd1',
-  //     to: email,
-  //     dataVariables: {
-  //       passcode: passcode.code,
-  //       url: `https://actualed.com/auth/verify/${passcode.id}`
-  //     }
-  //   })
-  //   console.log({ emailRes})
-  //   const { success, message } = emailRes as { success: boolean; message: string; }
-  //   console.log({ success, message })
-  //   if (!success) {
-  //     return NextResponse.json({ error: `Internal error: /signup send email ${message}` }, { status: 500 })
-  //   }
-  // } catch (e) {
-  //   console.log({ error: e })
-  //   return NextResponse.json({ error: `Internal error: /signup send email generic ${e}` }, { status: 500 })
-  // }
+  try {
+    const emailRes = await sendEmail({
+      transactionalId: process.env.LOOPS_SIGNUP_ID as string,
+      to: email,
+      mailingLists: {
+        [LOOPS_LIST_ID_FREE]: true
+      },
+      dataVariables: {
+        passcode: passcode.code,
+        url: `https://actualed.com/auth/verify/${passcode.id}`
+      }
+    })
+    console.log({ emailRes})
+    const { success, message } = emailRes as { success: boolean; message: string; }
+    console.log({ success, message })
+    if (!success) {
+      return NextResponse.json({ error: `Internal error: /signup send email ${message}` }, { status: 500 })
+    }
+  } catch (e) {
+    console.log({ error: e })
+    return NextResponse.json({ error: `Internal error: /signup send email generic ${e}` }, { status: 500 })
+  }
 
   // return passcode id to client
   return NextResponse.json({ passcodeId: passcode.id })

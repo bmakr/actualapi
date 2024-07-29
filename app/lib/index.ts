@@ -1,2 +1,2 @@
-export { getClient, setItem, getItem } from './upstash'
+export { getClient, setItem, getItem, deleteItem } from './upstash'
 export { createId, nowInSeconds, sendEmail } from './shared'

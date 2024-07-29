@@ -7,29 +7,31 @@ type Options = {
   email: string;
   dataVariables?: {
     [key: string]: string | number;
-  }
-
+  };
+  mailingLists?: { [key: string]: boolean;};
 }
 
 export async function sendEmail({
   dataVariables,
   transactionalId,
   to,
+  mailingLists
 }: {
   to: string;
   transactionalId: string;
   dataVariables?: {
     [key: string]: string | number;
-  }
+  };
+  mailingLists?: { [key: string]: boolean; };
   }) {
   // initialize loops client
   const LOOPS_API_KEY = process.env.LOOPS_API_KEY as string
-  console.log({ 'LOOPS_API_KEY': LOOPS_API_KEY })
   const loops = new LoopsClient(LOOPS_API_KEY)
 
   const options: Options = {
     transactionalId,
     email: to,
+    mailingLists: mailingLists || {}
   }
 
   if (dataVariables) {
