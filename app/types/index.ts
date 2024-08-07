@@ -20,3 +20,12 @@ export type Passcode = {
   createdAt: number;
 }
 
+
+export type Session = {
+  id: string;
+  userId: string;
+  createdAt: number;
+  loggedOutAt: number;
+  active: boolean;
+}
+
